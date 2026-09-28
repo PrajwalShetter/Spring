@@ -2,6 +2,9 @@ package com.xworkz.airapp.aircraft;
 
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 @Component
 public class AirCraft  {
 
@@ -47,5 +50,14 @@ public class AirCraft  {
                 ", name='" + name + '\'' +
                 ", model=" + model +
                 '}';
+    }
+
+    @PostConstruct
+    public void initAirCraft(){
+        System.out.println("Bean initialize");
+    }
+    @PreDestroy
+    public void destroyController(){
+        System.out.println("Closing all the costly resources");
     }
 }
