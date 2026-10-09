@@ -4,6 +4,8 @@
 <html>
 <head>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+
     <title>Registration</title>
 
     <style>
@@ -107,7 +109,7 @@ ${failure}
 
             <label>Phone</label>
 
-            <input type="text" id="phone" name="phone">
+            <input type="text" id="phone" name="phone" onchange="checkPhoneNumberIsExist()" >
 
             <div id="phoneError" class="error"></div>
 
@@ -119,7 +121,7 @@ ${failure}
 
             <label>Email</label>
 
-            <input type="text" id="email" name="email">
+            <input type="text" id="email" name="email" onchange="checkEmailIsExist()">
 
             <div id="emailError" class="error"></div>
 
@@ -170,18 +172,55 @@ ${failure}
 
         </div>
 
-
-        <button type="submit" class="register-btn">
+         <button type="submit" class="register-btn">
             Register
         </button>
 
     </form>
+
+    <div class="field">
+        <a href="login">I have already an Account</a>
+    </div>
 
 </div>
 <jsp:include page="footer.jsp" />
 
 
 <script>
+    async function checkPhoneNumberIsExist(){
+        let contactNumber = document.getElementById("phone").value;
+        // var response = await fetch("http://localhost:8080/CommonModules/checkContactNumber?phone="+contactNumber);
+        // // .then((response)=>console.log(response)).catch((response)=>console.log(response));
+        // var data = await response.text();
+        // console.log(data);
+
+        var response = await axios("http://localhost:8080/CommonModules/checkContactNumber?phone="+contactNumber);
+        var data = response.data;
+
+        if(data === "The Number is Exist"){
+            document.getElementById("phoneError").innerHTML= data;
+        }
+        else{
+            document.getElementById("phoneError").innerHTML= "";
+        }
+
+    }
+
+    async function checkEmailIsExist(){
+
+        let emailId = document.getElementById("email").value;
+        var response = await axios("http://localhost:8080/CommonModules/checkEmail?email="+emailId);
+        var data = response.data;
+
+        if(data === "The Email is Exist"){
+            document.getElementById("emailError").innerHTML= data;
+        }
+        else{
+            document.getElementById("emailError").innerHTML= "";
+        }
+
+    }
+
    function validateForm() {
 
        let valid = true;
@@ -198,30 +237,16 @@ ${failure}
        // ---------------- NAME ----------------
 
        if (name === "") {
-
-           document.getElementById("nameError").innerHTML =
-               "Name is required";
-
+           document.getElementById("nameError").innerHTML =  "Name is required";
            valid = false;
-
        } else if (name.length <= 3) {
-
-           document.getElementById("nameError").innerHTML =
-               "Name should contain more than 3 characters";
-
+           document.getElementById("nameError").innerHTML = "Name should contain more than 3 characters";
            valid = false;
-
        } else if (!/^[A-Za-z ]+$/.test(name)) {
-
-           document.getElementById("nameError").innerHTML =
-               "Name should contain only letters";
-
+           document.getElementById("nameError").innerHTML = "Name should contain only letters";
            valid = false;
-
        } else {
-
            document.getElementById("nameError").innerHTML = "";
-
        }
 
 
@@ -325,30 +350,22 @@ ${failure}
 
 
        // ---------------- CONFIRM PASSWORD ----------------
-
        if (confirmPassword === "") {
-
            document.getElementById("confirmPasswordError").innerHTML =
                "Confirm password is required";
-
            valid = false;
-
        } else if (password !== confirmPassword) {
-
            document.getElementById("confirmPasswordError").innerHTML =
                "Passwords do not match";
-
            valid = false;
-
        } else {
-
            document.getElementById("confirmPasswordError").innerHTML = "";
 
        }
-
-
        return valid;
    }
+
+
 
 </script>
 
