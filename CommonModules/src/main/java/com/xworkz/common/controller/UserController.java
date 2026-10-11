@@ -35,14 +35,19 @@ public class UserController {
             allErrors.stream().forEach(objectError -> {
                 System.out.println(objectError.getDefaultMessage());
             });
-            model.addAttribute("failure", "Enter a valid data");
+            model.addAttribute("failure", "Enter valid data");
             return "registration";
         }
+
         // Service validation
         String message = userService.saveUser(userDto);
-        if (message.equalsIgnoreCase("Enter a valid data") || message.equalsIgnoreCase("User Not Registered")) {
+        if (message.equalsIgnoreCase("User registration failed")
+                || message.equalsIgnoreCase("Email already exists")
+                || message.equalsIgnoreCase("Phone number already exists")) {
+
             model.addAttribute("failure", message);
             return "registration";
+
         } else {
             model.addAttribute("success", message);
             return "registration";
