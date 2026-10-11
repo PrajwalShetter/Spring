@@ -84,8 +84,6 @@
 <body>
 <jsp:include page="navbar.jsp" />
 
-${success}
-${failure}
 <div class="container">
 
     <h2>Login Form</h2>
@@ -109,7 +107,7 @@ ${failure}
 
             <label>Email</label>
 
-            <input type="text" id="email" name="email" >
+            <input type="text" id="email" name="email" onchange = "checkEmailIsExist()">
 
             <div id="emailError" class="error"></div>
 
@@ -172,10 +170,10 @@ ${failure}
         var data = response.data;
 
         if(data === "The Email is Exist"){
-            document.getElementById("emailError").innerHTML= data;
+            document.getElementById("emailError").innerHTML= "";
         }
         else{
-            document.getElementById("emailError").innerHTML= "";
+            document.getElementById("emailError").innerHTML= "The email not found";
         }
 
     }
@@ -330,7 +328,7 @@ ${failure}
    let formatedDateTime =
    now.getFullYear()+"-"+
    String(now.getMonth()+1).padStart(2,'0')+"-"+
-   String(now.getDay()).padStart(2,'0')+"T"+
+   String(now.getDate()).padStart(2,'0')+"T"+
    String(now.getHours()).padStart(2,'0')+":"+
    String(now.getMinutes()).padStart(2,'0')+":"+
    String(now.getSeconds()).padStart(2,'0');
@@ -339,7 +337,16 @@ ${failure}
 
    }
 
+var success = "${success}";
+    var failure = "${failure}";
 
+    if (success) {
+        alert(success);
+    }
+
+    if (failure) {
+        alert(failure);
+    }
 
 </script>
 
