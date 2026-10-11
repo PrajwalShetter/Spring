@@ -22,7 +22,7 @@ public class LoginEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
     @Column(nullable = false)
     private String password;
