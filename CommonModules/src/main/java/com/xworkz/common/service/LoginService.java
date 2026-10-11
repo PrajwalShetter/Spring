@@ -6,4 +6,5 @@ import com.xworkz.common.entity.LoginEntity;
 public interface LoginService {
 
      String saveLogin(LoginDto loginDto);
+     String passwordMatch(String email, String password);
 }
