@@ -23,23 +23,31 @@ public class LoginController {
 
     @PostMapping("login")
     public String saveLogin(@Valid LoginDto loginDto, Model model, BindingResult binding){
+        System.out.println("Login controller reached");
         System.out.println(loginDto);
-        if(binding.hasErrors()){
-            List<ObjectError> allErrors = binding.getAllErrors();
-            allErrors.stream().forEach(objectError -> System.out.println(objectError.getDefaultMessage()));
-        }
-        else{
-            model.addAttribute("failure","Enter a valid data");
+
+        if (binding.hasErrors()) {
+            binding.getAllErrors().forEach(error -> {
+                System.out.println("Validation error: "
+                        + error.getDefaultMessage());
+            });
+
+            model.addAttribute("failure", "Enter valid data");
             return "login";
         }
+
+        System.out.println("Before calling login service");
+
         String message = loginService.saveLogin(loginDto);
-        if(message.equalsIgnoreCase("Enter a valid Data") || message.equalsIgnoreCase("Login not saved in DB")){
-            model.addAttribute("failure", "Login failed something went wrong");
-            return "login";
+
+        System.out.println("After calling login service");
+        System.out.println("Message: " + message);
+        if (message.equalsIgnoreCase("Login saved successfully into DB")) {
+            model.addAttribute("success", "Login successful");
+        } else {
+            model.addAttribute("failure", message);
         }
-        else {
-            model.addAttribute("success", "Login success");
-            return "login";
-        }
+        return "login";
+
     }
 }
