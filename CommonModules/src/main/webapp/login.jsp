@@ -1,97 +1,99 @@
 <%@ page isELIgnored="false" %>
 
-<!DOCTYPE html>
-<html>
-<head>
+    <!DOCTYPE html>
+    <html>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <head>
 
-    <title>Registration</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-        }
+        <title>Login</title>
 
-        .container {
-            width: 450px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f4f6f8;
+            }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+            .container {
+                width: 450px;
+                margin: 50px auto;
+                background-color: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            }
 
-        .field {
-            margin-bottom: 18px;
-        }
+            h2 {
+                text-align: center;
+                margin-bottom: 25px;
+            }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
+            .field {
+                margin-bottom: 18px;
+            }
 
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+            label {
+                display: block;
+                margin-bottom: 6px;
+                font-weight: bold;
+            }
 
-        .gender {
-            display: flex;
-            gap: 20px;
-        }
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-        .gender label {
-            font-weight: normal;
-            display: inline;
-        }
+            .gender {
+                display: flex;
+                gap: 20px;
+            }
 
-        .error {
-            color: red;
-            font-size: 13px;
-            margin-top: 5px;
-        }
+            .gender label {
+                font-weight: normal;
+                display: inline;
+            }
 
-        .register-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            background-color: #222;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
+            .error {
+                color: red;
+                font-size: 13px;
+                margin-top: 5px;
+            }
 
-        .register-btn:hover {
-            background-color: #00bcd4;
-        }
-    </style>
+            .register-btn {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                border-radius: 5px;
+                background-color: #222;
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+            }
 
-</head>
-<body>
-<jsp:include page="navbar.jsp" />
+            .register-btn:hover {
+                background-color: #00bcd4;
+            }
+        </style>
 
-<div class="container">
+    </head>
 
-    <h2>Login Form</h2>
+    <body>
+        <jsp:include page="navbar.jsp" />
 
-    <form action="login" method="post" onsubmit ="setDateAndTime(); return validateForm()">
+        <div class="container">
 
-        <!-- Phone -->
-    <!--    <div class="field">
+            <h2>Login Form</h2>
+
+            <form action="login" method="post" onsubmit="setDateAndTime()">
+
+                <!-- Phone -->
+                <!--    <div class="field">
 
             <label>Phone</label>
 
@@ -102,253 +104,145 @@
         </div> -->
 
 
-        <!-- Email -->
-        <div class="field">
+                <!-- Email -->
+                <div class="field">
 
-            <label>Email</label>
+                    <label>Email</label>
 
-            <input type="text" id="email" name="email" onchange = "checkEmailIsExist()">
+                    <input type="text" id="email" name="email" onchange="checkEmailIsExist()">
 
-            <div id="emailError" class="error"></div>
+                    <div id="emailError" class="error"></div>
 
+                </div>
+
+                <!-- Password -->
+                <div class="field">
+
+                    <label>Password</label>
+
+                    <input type="password" id="password" name="password" onchange="checkPassword()" >
+
+                    <div id="passwordError" class="error"></div>
+
+                </div>
+
+                <div>
+                    <input type="hidden" id="dateAndTime" name="dateAndTime">
+                </div>
+
+                <button type="submit" class="register-btn" id="loginBtn" disabled>
+                    Login
+                </button>
+
+            </form>
+
+            <div class="field">
+                <a href="signup">Create an Account</a>
+            </div>
         </div>
+        <jsp:include page="footer.jsp" />
 
-        <!-- Password -->
-        <div class="field">
 
-            <label>Password</label>
+        <script>
+            async function checkPhoneNumberIsExist() {
+                let contactNumber = document.getElementById("phone").value;
+                // var response = await fetch("http://localhost:8080/CommonModules/checkContactNumber?phone="+contactNumber);
+                // // .then((response)=>console.log(response)).catch((response)=>console.log(response));
+                // var data = await response.text();
+                // console.log(data);
 
-            <input type="password"
-                   id="password"
-                   name="password">
+                var response = await axios("http://localhost:8080/CommonModules/checkContactNumber?phone=" + contactNumber);
+                var data = response.data;
 
-            <div id="passwordError" class="error"></div>
+                if (data === "The Number is Exist") {
+                    document.getElementById("phoneError").innerHTML = data;
+                }
+                else {
+                    document.getElementById("phoneError").innerHTML = "";
+                }
 
-        </div>
+            }
 
-        <div>
-            <input type="hidden" id="dateAndTime" name="dateAndTime">
-        </div>
+            async function checkEmailIsExist() {
 
-         <button type="submit" class="register-btn">
-            Login
-        </button>
+                let emailId = document.getElementById("email").value;
+                let loginBtnField = document.getElementById("loginBtn");
+                 loginBtnField.disabled=true;
 
-    </form>
+                if (emailId != null) {
+                    var response = await axios("http://localhost:8080/CommonModules/checkEmail?email=" + emailId);
+                    var data = response.data;
 
-    <div class="field">
-        <a href="signup">Create an Account</a>
-    </div>
-</div>
-<jsp:include page="footer.jsp" />
+                    if (data === "The Email is Exist") {
+                        document.getElementById("emailError").innerHTML = "";
+                         loginBtnField.disabled=false;
+                    
+                    }
+                    else {
+                        document.getElementById("emailError").innerHTML = "The email not found";
+                    }
+                }
+                else {
+                    document.getElementById("emailError").innerHTML = "Email is required";
+                }
 
 
-<script>
-    async function checkPhoneNumberIsExist(){
-        let contactNumber = document.getElementById("phone").value;
-        // var response = await fetch("http://localhost:8080/CommonModules/checkContactNumber?phone="+contactNumber);
-        // // .then((response)=>console.log(response)).catch((response)=>console.log(response));
-        // var data = await response.text();
-        // console.log(data);
+            }
 
-        var response = await axios("http://localhost:8080/CommonModules/checkContactNumber?phone="+contactNumber);
-        var data = response.data;
+            async function checkPassword() {
 
-        if(data === "The Number is Exist"){
-            document.getElementById("phoneError").innerHTML= data;
-        }
-        else{
-            document.getElementById("phoneError").innerHTML= "";
-        }
+                let emailId = document.getElementById("email").value;
+                let password = document.getElementById("password").value;
+               
 
-    }
+                var response = await axios(
+                    "http://localhost:8080/CommonModules/checkPassword?email="
+                    + emailId + "&password=" + password
+                );
 
-    async function checkEmailIsExist(){
+                var data = response.data;
 
-        let emailId = document.getElementById("email").value;
-        var response = await axios("http://localhost:8080/CommonModules/checkEmail?email="+emailId);
-        var data = response.data;
+                if (data === "Password Matched") {
+                    document.getElementById("passwordError").innerHTML = "";
+                   
 
-        if(data === "The Email is Exist"){
-            document.getElementById("emailError").innerHTML= "";
-        }
-        else{
-            document.getElementById("emailError").innerHTML= "The email not found";
-        }
+                }
+                else {
+                    document.getElementById("passwordError").innerHTML = data;
+                }
+            }
 
-    }
 
-   function validateForm() {
 
-       let valid = true;
 
-       // Get values using DOM
-       let name = document.getElementById("name").value.trim();
-       let phone = document.getElementById("phone").value.trim();
-       let email = document.getElementById("email").value.trim();
-       let gender = document.getElementById("gender").value;
-       let password = document.getElementById("password").value;
-       let confirmPassword = document.getElementById("confirmPassword").value;
+            function setDateAndTime() {
+                let now = new Date();
 
+                let formatedDateTime =
+                    now.getFullYear() + "-" +
+                    String(now.getMonth() + 1).padStart(2, '0') + "-" +
+                    String(now.getDate()).padStart(2, '0') + "T" +
+                    String(now.getHours()).padStart(2, '0') + ":" +
+                    String(now.getMinutes()).padStart(2, '0') + ":" +
+                    String(now.getSeconds()).padStart(2, '0');
 
-       // ---------------- NAME ----------------
+                document.getElementById("dateAndTime").value = formatedDateTime;
 
-       if (name === "") {
-           document.getElementById("nameError").innerHTML =  "Name is required";
-           valid = false;
-       } else if (name.length <= 3) {
-           document.getElementById("nameError").innerHTML = "Name should contain more than 3 characters";
-           valid = false;
-       } else if (!/^[A-Za-z ]+$/.test(name)) {
-           document.getElementById("nameError").innerHTML = "Name should contain only letters";
-           valid = false;
-       } else {
-           document.getElementById("nameError").innerHTML = "";
-       }
+            }
 
+            var success = "${success}";
+            var failure = "${failure}";
 
-       // ---------------- PHONE ----------------
+            if (success) {
+                alert(success);
+            }
 
-       if (phone === "") {
+            if (failure) {
+                alert(failure);
+            }
 
-           document.getElementById("phoneError").innerHTML =
-               "Phone number is required";
+        </script>
 
-           valid = false;
+    </body>
 
-       } else if (!/^[6-9][0-9]{9}$/.test(phone)) {
-
-           document.getElementById("phoneError").innerHTML =
-               "Enter a valid Indian 10 digit mobile number";
-
-           valid = false;
-
-       } else {
-
-           document.getElementById("phoneError").innerHTML = "";
-
-       }
-
-
-       // ---------------- EMAIL ----------------
-
-       if (email === "") {
-
-           document.getElementById("emailError").innerHTML =
-               "Email is required";
-
-           valid = false;
-
-       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-
-           document.getElementById("emailError").innerHTML =
-               "Enter a valid email address";
-
-           valid = false;
-
-       } else {
-
-           document.getElementById("emailError").innerHTML = "";
-
-       }
-
-
-       // ---------------- GENDER ----------------
-
-       if (gender === "") {
-
-           document.getElementById("genderError").innerHTML =
-               "Please select your gender";
-
-           valid = false;
-
-       } else {
-
-           document.getElementById("genderError").innerHTML = "";
-
-       }
-
-
-       // ---------------- PASSWORD ----------------
-
-       if (password === "") {
-
-           document.getElementById("passwordError").innerHTML =
-               "Password is required";
-
-           valid = false;
-
-       } else if (password.length < 8) {
-
-           document.getElementById("passwordError").innerHTML =
-               "Password must contain at least 8 characters";
-
-           valid = false;
-
-       } else if (!/[A-Z]/.test(password)) {
-
-           document.getElementById("passwordError").innerHTML =
-               "Password must contain at least 1 uppercase letter";
-
-           valid = false;
-
-       } else if (!/[!@#$%^&*(),.?":{}|<>_\-+=/\\[\];'`~]/.test(password)) {
-
-           document.getElementById("passwordError").innerHTML =
-               "Password must contain at least 1 symbol";
-
-           valid = false;
-
-       } else {
-
-           document.getElementById("passwordError").innerHTML = "";
-
-       }
-
-
-       // ---------------- CONFIRM PASSWORD ----------------
-       if (confirmPassword === "") {
-           document.getElementById("confirmPasswordError").innerHTML =
-               "Confirm password is required";
-           valid = false;
-       } else if (password !== confirmPassword) {
-           document.getElementById("confirmPasswordError").innerHTML =
-               "Passwords do not match";
-           valid = false;
-       } else {
-           document.getElementById("confirmPasswordError").innerHTML = "";
-
-       }
-       return valid;
-   }
-
-   function setDateAndTime(){
-   let now = new Date();
-
-   let formatedDateTime =
-   now.getFullYear()+"-"+
-   String(now.getMonth()+1).padStart(2,'0')+"-"+
-   String(now.getDate()).padStart(2,'0')+"T"+
-   String(now.getHours()).padStart(2,'0')+":"+
-   String(now.getMinutes()).padStart(2,'0')+":"+
-   String(now.getSeconds()).padStart(2,'0');
-
-   document.getElementById("dateAndTime").value=formatedDateTime;
-
-   }
-
-var success = "${success}";
-    var failure = "${failure}";
-
-    if (success) {
-        alert(success);
-    }
-
-    if (failure) {
-        alert(failure);
-    }
-
-</script>
-
-</body>
-</html>
+    </html>
