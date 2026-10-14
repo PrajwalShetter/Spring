@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.ws.Binding;
 import java.util.List;
@@ -20,11 +22,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @GetMapping("signup")
-    public String getSignUp(){
-        return "registration";
-    }
 
     @PostMapping("register")
     public String saveUser(@Valid UserDto userDto, BindingResult binding, Model model) {
@@ -50,14 +47,33 @@ public class UserController {
 
         } else {
             model.addAttribute("success", message);
-            return "registration";
+            return "login";
         }
+
     }
 
-    @GetMapping("login")
-    public String getLogin(){
+    @GetMapping("logout")
+    public String logout(){
         return "login";
     }
+
+    @GetMapping("home")
+    public String homepage(){
+        return "user/Index";
+    }
+
+    @GetMapping("profile")
+    public String viewProfile( Model model,HttpSession session){
+        String email = (String)session.getAttribute("loggedInEmail");
+        if(email==null){
+            return "login";
+        }
+        UserDto userDto = userService.findByEmail(email);
+        System.out.println(userDto);
+        model.addAttribute("profile", userDto);
+        return "user/profile";
+    }
+
 
 
 
