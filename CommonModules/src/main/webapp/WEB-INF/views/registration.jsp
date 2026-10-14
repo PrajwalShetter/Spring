@@ -6,6 +6,8 @@
     <head>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+              rel="stylesheet">
 
         <title>Registration</title>
 
@@ -183,7 +185,7 @@
             </div>
 
         </div>
-        <jsp:include page="footer.jsp" />
+        <jsp:include page="common/footer.jsp" />
 
         <script>
 
