@@ -61,4 +61,9 @@ public class UserDto {
     @NotBlank(message = "ConfirmPassword should not be Blank")
     @NotEmpty(message = "ConfirmPassword should not be Empty")
     private String confirmPassword;
+
+    private Boolean status;
+    private Integer count;
+
+    private String otp;
 }
