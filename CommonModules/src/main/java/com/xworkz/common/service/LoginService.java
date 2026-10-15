@@ -7,4 +7,8 @@ public interface LoginService {
 
      String saveLogin(LoginDto loginDto);
      String passwordMatch(String email, String password);
+     String sendOtp(String email);
+     String verifyOtp(String email, String otp);
+     String resetPassword(String email, String password);
+
 }
