@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,33 +24,32 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("login")
-    public String saveLogin(@Valid LoginDto loginDto, Model model, BindingResult binding, HttpSession session){
+    public String saveLogin(@Valid LoginDto loginDto, BindingResult binding, Model model, HttpSession session) {
         System.out.println("Login controller reached");
         System.out.println(loginDto);
-
         if (binding.hasErrors()) {
-            binding.getAllErrors().forEach(error -> {
-                System.out.println("Validation error: "
-                        + error.getDefaultMessage());
-            });
+            binding.getAllErrors().forEach(error ->
+                    System.out.println("Validation error: "
+                            + error.getDefaultMessage()));
 
             model.addAttribute("failure", "Enter valid data");
             return "login";
         }
 
         System.out.println("Before calling login service");
-
         String message = loginService.saveLogin(loginDto);
-
         System.out.println("Message: " + message);
-        if (message.equalsIgnoreCase("Login saved successfully into DB")) {
-            model.addAttribute("success", "Login successful");
-            session.setAttribute("loggedInEmail",loginDto.getEmail());
-            return "user/Index";
-        } else {
-            model.addAttribute("failure", message);
-        }
-        return "login";
 
+        if (message.equalsIgnoreCase("login saved successfully into DB")) {
+            session.setAttribute("loggedInEmail", loginDto.getEmail());
+            model.addAttribute("success", "Login successful");
+            return "user/Index";
+        }
+        model.addAttribute("failure", message);
+        return "login";
     }
+
+
+
+
 }
