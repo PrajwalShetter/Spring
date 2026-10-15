@@ -141,6 +141,10 @@
             <div class="field">
                 <a href="signup">Create an Account</a>
             </div>
+
+            <div class="field">
+                            <a href="reset">Reset Password</a>
+                        </div>
         </div>
         <jsp:include page="common/footer.jsp" />
 
@@ -203,19 +207,19 @@
                 );
 
                 var data = response.data;
+                console.log("Password API response:", data);
 
+                 if(data === "Account_Blocked"){
+                    window.location.href="reset";
+                    return ;
+                 }
                 if (data === "Password Matched") {
                     document.getElementById("passwordError").innerHTML = "";
-                   
-
                 }
                 else {
                     document.getElementById("passwordError").innerHTML = data;
                 }
             }
-
-
-
 
             function setDateAndTime() {
                 let now = new Date();
