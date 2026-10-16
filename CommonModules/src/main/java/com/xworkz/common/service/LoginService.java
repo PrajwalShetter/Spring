@@ -9,6 +9,6 @@ public interface LoginService {
      String passwordMatch(String email, String password);
      String sendOtp(String email);
      String verifyOtp(String email, String otp);
-     String resetPassword(String email, String password);
+     String resetNewPassword(String email, String password, String confirmPassword);
 
 }
