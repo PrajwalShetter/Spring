@@ -40,9 +40,13 @@ public class LoginController {
         String message = loginService.saveLogin(loginDto);
         System.out.println("Message: " + message);
 
+        if(message.equalsIgnoreCase("Account is Blocked. please reset the password")){
+            model.addAttribute("email", loginDto.getEmail());
+            model.addAttribute("blockMsg","Your account has been blocked for attempting 3 times incorrect password");
+            return "user/resetPassword";
+        }
         if (message.equalsIgnoreCase("login saved successfully into DB")) {
             session.setAttribute("loggedInEmail", loginDto.getEmail());
-            model.addAttribute("success", "Login successful");
             return "user/Index";
         }
         model.addAttribute("failure", message);
