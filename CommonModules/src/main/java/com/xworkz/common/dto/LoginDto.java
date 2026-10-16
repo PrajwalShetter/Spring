@@ -25,8 +25,6 @@ public class LoginDto {
     @Email
     private String email;
 
-    @Size(min = 8, max = 20, message = "password should at least 8 char")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[A-Za-z0-9]).{8,}$",message = "password must contain at least 8 char,1 uppercase and 1 symbol")
     private String password;
 
     @NotNull(message = "Local date can not be null")
