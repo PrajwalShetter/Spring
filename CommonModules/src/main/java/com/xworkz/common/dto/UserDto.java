@@ -4,6 +4,7 @@ import com.xworkz.common.constants.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 
@@ -66,4 +67,6 @@ public class UserDto {
     private Integer count;
 
     private String otp;
+    private String profilePic;
+    private MultipartFile profilePicFile;
 }
