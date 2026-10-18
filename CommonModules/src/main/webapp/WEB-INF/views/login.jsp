@@ -132,7 +132,7 @@
                         <input type="hidden" id="dateAndTime" name="dateAndTime">
                     </div>
 
-                    <button type="submit" class="register-btn" id="loginBtn" disabled>
+                    <button type="submit" class="register-btn" id="loginBtn">
                         Login
                     </button>
 
@@ -172,8 +172,6 @@
                 async function checkEmailIsExist() {
 
                     let emailId = document.getElementById("email").value;
-                    let loginBtnField = document.getElementById("loginBtn");
-                     loginBtnField.disabled=true;
 
                     if (emailId != null) {
                         var response = await axios("http://localhost:8080/CommonModules/checkEmail?email=" + emailId);
@@ -181,7 +179,6 @@
 
                         if (data === "The Email is Exist") {
                             document.getElementById("emailError").innerHTML = "";
-                             loginBtnField.disabled=false;
 
                         }
                         else {
