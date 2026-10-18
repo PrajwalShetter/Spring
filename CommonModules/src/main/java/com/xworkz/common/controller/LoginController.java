@@ -47,9 +47,10 @@ public class LoginController {
         }
         if (message.equalsIgnoreCase("login saved successfully into DB")) {
             session.setAttribute("loggedInEmail", loginDto.getEmail());
-            return "user/Index";
+            return "redirect:/home";
         }
         model.addAttribute("failure", message);
+        model.addAttribute("email",loginDto.getEmail());
         return "login";
     }
 
