@@ -58,7 +58,10 @@
                            name="newPassword"
                            placeholder="Enter new password"
                            minlength="8"
+                           oninput="validatePasswords()"
                            required>
+
+                    <div id="newPasswordError" class="text-danger small mt-2"></div>
                 </div>
 
                 <!-- Confirm Password -->
@@ -91,25 +94,32 @@
 </div>
 
 <script>
-    function validatePasswords() {
+   function validatePasswords() {
 
-        var newPassword =
-            document.getElementById("newPassword").value;
+       var newPassword = document.getElementById("newPassword").value;
+       var confirmPassword = document.getElementById("confirmPassword").value;
 
-        var confirmPassword =
-            document.getElementById("confirmPassword").value;
+       var newPasswordError = document.getElementById("newPasswordError");
+       var passwordError = document.getElementById("passwordError");
 
-        var passwordError =
-            document.getElementById("passwordError");
+       var passwordPattern = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,20}$/;
 
-        if (newPassword !== confirmPassword) {
-            passwordError.innerText = "Passwords do not match.";
-            return false;
-        }
+       if (newPassword.length > 0 && !passwordPattern.test(newPassword)) {
+           newPasswordError.innerText =
+               "Password must contain 8–20 characters, 1 uppercase letter and 1 symbol.";
+       } else {
+           newPasswordError.innerText = "";
+       }
 
-        passwordError.innerText = "";
-        return true;
-    }
+       if (confirmPassword.length > 0 && newPassword !== confirmPassword) {
+           passwordError.innerText = "Passwords do not match.";
+       } else {
+           passwordError.innerText = "";
+       }
+
+       return passwordPattern.test(newPassword) &&
+              newPassword === confirmPassword;
+   }
 </script>
 
 </body>
