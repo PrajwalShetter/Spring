@@ -64,6 +64,10 @@
                                 pattern="[0-9]{6}" required>
                         </div>
 
+                         <c:if test="${not empty failure}">
+                             <small class="text-danger">${failure}</small>
+                         </c:if>
+
                         <button type="submit" class="btn btn-success w-100">
                             Verify OTP
                         </button>
