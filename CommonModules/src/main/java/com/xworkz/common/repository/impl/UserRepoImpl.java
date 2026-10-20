@@ -100,6 +100,14 @@ public class UserRepoImpl implements UserRepo {
 
     }
 
+    @Override
+    public UserEntity findById(int id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-
+        try{
+            return entityManager.find(UserEntity.class,id);
+        }finally {
+            entityManager.close();
+        }
+    }
 }
