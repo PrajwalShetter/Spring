@@ -98,7 +98,7 @@
             </div>
 
             <!-- Upload Profile Picture -->
-            <form action="${pageContext.request.contextPath}/user/uploadProfilePic"
+            <form action="uploadProfilePic"
                   method="post"
                   enctype="multipart/form-data"
                   class="border-top pt-4 mt-2">
@@ -134,7 +134,7 @@
             </form>
 
             <div class="text-center mt-3">
-                <a href="${pageContext.request.contextPath}/user/editProfile"
+                <a href="editProfile"
                    class="btn btn-primary px-5">
                     Edit Profile
                 </a>
