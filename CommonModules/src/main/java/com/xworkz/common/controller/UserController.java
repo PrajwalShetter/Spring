@@ -3,6 +3,7 @@ package com.xworkz.common.controller;
 import com.xworkz.common.dto.UserDto;
 import com.xworkz.common.service.UserService;
 import org.apache.commons.io.IOUtils;
+import org.hibernate.Session;
 import org.jvnet.staxex.NamespaceContextEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -149,6 +150,40 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("editProfile")
+    public  String editProfile(HttpSession session, Model model, HttpServletResponse response){
+        response.setHeader("Cache-Control", "no_cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        String email = (String) session.getAttribute("loggedInEmail");
+        if(email == null){
+            return "redirect:/login";
+        }
+        UserDto user= userService.findByEmail(email);
+        if(user == null){
+            session.invalidate();
+            return "redirect:/login";
+        }
+        model.addAttribute("user",user);
+        return "user/editProfile";
+    }
+
+    @PostMapping("updateProfile")
+    public String updateProfile( @RequestParam(value = "profilePicFile", required = false)
+                                     MultipartFile profilePicFile,  UserDto userdto,Model model){
+        if(userdto == null){
+            return "redirect:/profile";
+        }
+        boolean save = userService.updateById(userdto);
+        if(save){
+            model.addAttribute("success", "updated successfully");
+            return "redirect:/profile";
+        }
+        model.addAttribute("failure", "something went wrong");
+        return "redirect:/editProfile";
     }
 
 }
